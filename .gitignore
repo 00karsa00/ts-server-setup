@@ -1,0 +1,13 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+*.env
+
+# Directories
+dist/
+
+# Ignore NPM debug files
+yarn.lock
+package-lock.json
