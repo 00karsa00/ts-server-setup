@@ -11,3 +11,6 @@ dist/
 # Ignore NPM debug files
 yarn.lock
 package-lock.json
+
+# Ignore logs
+logs/

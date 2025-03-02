@@ -1,46 +1,77 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { IProductInteractor } from "../interfaces/IProductInteractor";
 import { inject, injectable } from "inversify";
 import { INTERFACE_TYPE } from "../utils";
+import { CustomRequest } from "../type.config/custom";
 
 @injectable()
 export class ProductController {
   private interactor: IProductInteractor;
 
   constructor(
-    @inject(INTERFACE_TYPE.ProductInteractor) interactor: IProductInteractor) {
+    @inject(INTERFACE_TYPE.ProductInteractor) interactor: IProductInteractor
+  ) {
     this.interactor = interactor;
   }
 
-  async onCreateProduct(req: Request, res: Response, next: NextFunction) {
+  async onCreateProduct(
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const product = await this.interactor.createProduct(req.body);
-      res.status(201).json(product);
+      req.success = {
+        status: 201,
+        message: "Product created",
+        data: { product },
+      };
     } catch (error) {
-      next(error);
+      req.error = { status: 500, message: "Server Error!", error: error };
+    } finally {
+      next();
     }
   }
 
-  async onGetProducts(req: Request, res: Response, next: NextFunction) {
+  async onGetProducts(
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const offset = Number(req.query.offset) || 0;
       const limit = Number(req.query.limit) || 0;
-
       const products = await this.interactor.getProducts(limit, offset);
-      res.status(200).json({message: "success", data: {}});
+      req.success = {
+        status: 201,
+        message: "success",
+        data: { products },
+      };
     } catch (error) {
-      next(error);
+      req.error = { status: 500, message: "Server Error!", error: error };
+    } finally {
+      next();
     }
   }
-  async onUpdateStock(req: Request, res: Response, next: NextFunction) {
+
+  async onUpdateStock(
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const id = Number(req.params.id);
       const stock = req.body.stock;
-
       const product = await this.interactor.updateProduct(id, stock);
-      res.status(200).json(product);
+      req.success = {
+        status: 201,
+        message: "success",
+        data: { product },
+      };
     } catch (error) {
-      next(error)
+      req.error = { status: 500, message: "Server Error!", error: error };
+    } finally {
+      next();
     }
   }
 }

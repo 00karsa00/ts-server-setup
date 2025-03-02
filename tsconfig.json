@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "CommonJS",
+    "module": "commonjs",
     "rootDir": "src",
-    "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "outDir": "./dist"
   }
 }

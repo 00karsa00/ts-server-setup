@@ -1,6 +1,5 @@
-// src/routes/index.ts
-import express, { Router } from 'express';
-import { ProductRoutes } from './ProductRoutes';
+import express, { Router } from "express";
+import { ProductRoutes } from "./ProductRoutes";
 
 export class Routes {
   public router: Router;
@@ -11,9 +10,6 @@ export class Routes {
   }
 
   private initializeRoutes(): void {
-    this.router.get('/', (req, res) => {        
-        res.send('Welcome to the API');
-    });
-    this.router.use('/products', new ProductRoutes().router);
+    this.router.use("/products", new ProductRoutes().router);
   }
 }
