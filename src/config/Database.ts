@@ -1,8 +1,7 @@
 import knex, { Knex } from "knex";
 import dotenv from "dotenv";
-
+import { logger } from "../utils/logger";
 dotenv.config();
-
 export class Database {
   public knexInstance: Knex;
 
@@ -12,18 +11,19 @@ export class Database {
       connection: {
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
-        password: process.env.DB_PASS,
+        password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
       },
     });
+   
   }
 
   public async connect() {
     try {
       await this.knexInstance.raw("SELECT 1");
-      console.log("Database Connected");
+      logger.info("Database Connected");
     } catch (error) {
-      console.error("Database Connection Failed:", error);
+      logger.error("Failed to connect to the database:", `${error}`);
     }
   }
 }

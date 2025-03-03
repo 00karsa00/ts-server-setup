@@ -1,9 +1,19 @@
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+@Entity()
 export class Product {
-    constructor(
-        public readonly name: string,
-        public readonly description: string,
-        public readonly price: number,
-        public readonly stock: number,
-        public readonly id?: string,
-    ) {}
-} 
+  @PrimaryGeneratedColumn()
+  public id?: number;
+
+  @Column()
+  public name?: string;
+
+  @Column()
+  public description?: string;
+
+  @Column()
+  public price?: number;
+
+  @Column()
+  public stock?: number;
+}

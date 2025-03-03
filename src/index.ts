@@ -6,19 +6,23 @@ import { Routes } from "./routes";
 import { responseHandler } from "./interfaces/middleware/responseHandler";
 import { logRequestResponse } from "./interfaces/middleware/loggerMiddleware";
 import { logger } from "./utils/logger";
+// import { Database } from "./config/Database";
+import { AppDataSource } from "./config/database/typeOrm";
 
 dotenv.config();
-
 class Server {
   private app: Application;
   private port: number;
+  // private database;
 
   constructor() {
     this.app = express();
     this.port = Number(process.env.PORT) || 5000;
+    // this.database = new Database();
     this.initializeMiddleware();
     this.initializeRoutes();
     this.initializeResponseHandling();
+    this.typeOrmConnect();
     this.start();
   }
 
@@ -36,8 +40,18 @@ class Server {
     this.app.use(responseHandler as express.RequestHandler);
   }
 
+  private async typeOrmConnect(): Promise<void> {
+    try {
+      await AppDataSource.initialize();
+      console.log("Data Source has been initialized!");
+    } catch (error) {
+      console.error("Error during Data Source initialization:", error);
+    }
+  }
+
   private async start(): Promise<void> {
     try {
+      // await this.database.connect();
       this.app.listen(this.port, () => {
         logger.info(`Server running on port ${this.port}`);
       });
