@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { IProductInteractor } from "../interfaces/IProductInteractor";
 import { inject, injectable } from "inversify";
-import { INTERFACE_TYPE } from "../utils";
+import { INTERFACE_TYPE } from "../utils/appConst";
 import { CustomRequest } from "../type.config/custom";
 
 @injectable()
@@ -27,7 +27,7 @@ export class ProductController {
         data: { product },
       };
     } catch (error) {
-      req.error = { status: 500, message: "Server Error!", error: error };
+      req.error = { status: 500, message: "Server Error!" };
     } finally {
       next();
     }
@@ -48,7 +48,7 @@ export class ProductController {
         data: { products },
       };
     } catch (error) {
-      req.error = { status: 500, message: "Server Error!", error: error };
+      req.error = { status: 500, message: "Server Error!" };
     } finally {
       next();
     }
@@ -69,7 +69,7 @@ export class ProductController {
         data: { product },
       };
     } catch (error) {
-      req.error = { status: 500, message: "Server Error!", error: error };
+      req.error = { status: 500, message: "Server Error!" };
     } finally {
       next();
     }

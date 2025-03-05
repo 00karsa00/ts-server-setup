@@ -9,6 +9,6 @@ export interface CustomRequest extends Request {
   error?: {
     status: number;
     message: string;
-    error: any;
+    // error: any;
   };
 }

@@ -10,7 +10,7 @@ export const responseHandler = (
     return res.status(req.success.status).json(req.success);
   }
   if (req.error) {
-    return res.status(req.error.status).json({ error: req.error.error });
+    return res.status(req.error.status).json({ error: req.error.message });
   }
   next();
 };

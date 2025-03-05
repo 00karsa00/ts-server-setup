@@ -1,0 +1,22 @@
+### Create Users
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+    { 
+        "email": "karthi@gmail.com",
+        "password": "2345",
+        "name": "karhtick"
+    }
+
+### Get All Users
+GET http://localhost:3000/api/users
+Content-Type: application/json
+
+
+### Get User
+GET http://localhost:3000/api/users/67c7dc3d5dade1749a236ab9
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2M3NGFhZWMyNzc1Mjg1NmM1MWRmMDEiLCJlbWFpbCI6ImthcnRoaWMzQGdtYWlsLmNvbSIsImlhdCI6MTc0MTE1MDIwMywiZXhwIjoxNzQxMTUzODAzfQ.4A21a4_UC8JIxzTNbwbL2M25Ezz9T3gk2eI2ZUmvKFQ
+
+
+

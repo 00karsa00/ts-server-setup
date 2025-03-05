@@ -2,7 +2,7 @@
 import express, { Router } from 'express';
 import { Container } from 'inversify';
 import { ProductController } from '../controllers/ProductControllers';
-import { INTERFACE_TYPE } from '../utils';
+import { INTERFACE_TYPE } from '../utils/appConst';
 import { IproductRepository } from '../interfaces/IProductRepository';
 import { ProductRepository } from '../repositories/productRepository';
 import { IMailer } from '../interfaces/IMailer';

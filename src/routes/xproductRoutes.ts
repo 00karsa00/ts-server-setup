@@ -2,7 +2,7 @@ import express from "express";
 import { Container } from "inversify";
 import { IproductRepository } from "../interfaces/IProductRepository";
 import { ProductRepository } from "../repositories/productRepository";
-import { INTERFACE_TYPE } from "../utils";
+import { INTERFACE_TYPE } from "../utils/appConst";
 import { IMailer } from "../interfaces/IMailer";
 import { Mailer } from "../external-libraries/mailer";
 import { IMessageBroker } from "../interfaces/IMessageBroker";

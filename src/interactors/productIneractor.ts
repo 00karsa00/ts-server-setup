@@ -3,7 +3,7 @@ import { IMailer } from "../interfaces/IMailer";
 import { IMessageBroker } from "../interfaces/IMessageBroker";
 import { IProductInteractor } from "../interfaces/IProductInteractor";
 import { IproductRepository } from "../interfaces/IProductRepository";
-import { INTERFACE_TYPE } from "../utils";
+import { INTERFACE_TYPE } from "../utils/appConst";
 
 @injectable()
 export class ProductInteractor implements IProductInteractor {

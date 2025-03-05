@@ -8,6 +8,8 @@ import { logRequestResponse } from "./interfaces/middleware/loggerMiddleware";
 import { logger } from "./utils/logger";
 // import { Database } from "./config/Database";
 import { AppDataSource } from "./config/database/typeOrm";
+import { authMiddleware } from "./interfaces/middleware/authMiddleware";
+import { MongoDB } from "./config/database/mongoose";
 
 dotenv.config();
 class Server {
@@ -22,7 +24,8 @@ class Server {
     this.initializeMiddleware();
     this.initializeRoutes();
     this.initializeResponseHandling();
-    this.typeOrmConnect();
+    // this.typeOrmConnect();
+    this.mongooseOrmConnect();
     this.start();
   }
 
@@ -30,6 +33,7 @@ class Server {
     this.app.use(cors());
     this.app.use(express.json());
     this.app.use(logRequestResponse);
+    this.app.use(authMiddleware as express.RequestHandler);
   }
 
   private initializeRoutes(): void {
@@ -46,6 +50,15 @@ class Server {
       console.log("Data Source has been initialized!");
     } catch (error) {
       console.error("Error during Data Source initialization:", error);
+    }
+  }
+
+  private async mongooseOrmConnect(): Promise<void> {
+    try {
+      const mongoDB = MongoDB.getInstance();
+      await mongoDB.connect();
+    } catch (error) {
+      console.error("Error during mongose connection:", error);
     }
   }
 

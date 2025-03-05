@@ -1,40 +1,36 @@
 import express,{ Router } from "express";
 import { Container } from "inversify";
-import { INTERFACE_TYPE } from "../utils";
-import { IproductRepository } from "../interfaces/IProductRepository";
-import { ProductRepository } from "../repositories/productRepository";
-import { Mailer } from "../external-libraries/mailer";
-import { IMailer } from "../interfaces/IMailer";
-import { IMessageBroker } from "../interfaces/IMessageBroker";
-import { MessageBroker } from "../external-libraries/messageBroker";
-import { ProductInteractor } from "../interactors/productIneractor";
-import { IProductInteractor } from "../interfaces/IProductInteractor";
-import { ProductController } from "../controllers/ProductControllers";
+import { USER_INTERFACE_TYPE } from "../utils/appConst";
+import { User } from "../controllers/User";
+import { IUserRepository } from "../interfaces/IUser/IUserRepository";
+import { UserRepository } from "../repositories/UserRepository";
+import { IUserInteractor } from "../interfaces/IUser/IUserInteractor";
+import { UserInteractor } from "../interactors/UserInteractor";
+
 
 export class UserRoutes {
   public router: Router;
   private container: Container;
-  private controller: ProductController;
+  private controller: User;
 
   constructor() {
     this.router = express.Router();
     this.container = new Container();
     this.initializeRoutes();
     this.initializeBindings();
-    this.controller = this.container.get<ProductController>(INTERFACE_TYPE.ProductController);
+    this.controller = this.container.get<User>(USER_INTERFACE_TYPE.UserController);
   }
   
-
   private initializeBindings() {
-    this.container.bind<IproductRepository>(INTERFACE_TYPE.ProductRepository).to(ProductRepository);
-    this.container.bind<IMailer>(INTERFACE_TYPE.Mailer).to(Mailer);
-    this.container.bind<IMessageBroker>(INTERFACE_TYPE.MessageBroker).to(MessageBroker);
-    this.container.bind<IProductInteractor>(INTERFACE_TYPE.ProductInteractor).to(ProductInteractor);    
-    this.container.bind(INTERFACE_TYPE.ProductController).to(ProductController);
+    this.container.bind<IUserRepository>(USER_INTERFACE_TYPE.UserRepository).to(UserRepository);
+    this.container.bind<IUserInteractor>(USER_INTERFACE_TYPE.UserInteractor).to(UserInteractor);    
+    this.container.bind(USER_INTERFACE_TYPE.UserController).to(User);
   }
 
   private initializeRoutes() {
-    // this.router.post("/", (req, res) => this.userController.createUser(req, res));
-    // this.router.get("/", (req, res) => this.userController.getUsers(req, res));
+    this.router.post("/", (req, res, next) => this.controller.onCreateUser(req, res, next));
+    this.router.get("/", (req, res, next) => this.controller.onGetAllUsers(req, res, next));
+    this.router.get("/:id", (req, res, next) => this.controller.onGetUser(req, res, next));
+    this.router.put("/:id", (req, res, next) => this.controller.onGetUser(req, res, next));
   }
 }

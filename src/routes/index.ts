@@ -1,5 +1,7 @@
 import express, { Router } from "express";
 import { ProductRoutes } from "./ProductRoutes";
+import { UserRoutes } from "./UserRoutes";
+import { AuthRoutes } from "./auth";
 
 export class Routes {
   public router: Router;
@@ -11,5 +13,7 @@ export class Routes {
 
   private initializeRoutes(): void {
     this.router.use("/products", new ProductRoutes().router);
+    this.router.use("/users", new UserRoutes().router);
+    this.router.use("/auth", new AuthRoutes().router);
   }
 }
