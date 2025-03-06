@@ -71,17 +71,6 @@ export class AuthController {
         };
         return next();
       }
-      // if (!userInfo?.comparePassword(password)) {
-      //   req.success = {
-      //     status: 401,
-      //     message: "Password was not found",
-      //   };
-      //   return next();
-      // }
-      // const { id } = userInfo;
-      // const token = jwt.sign({ userId: id, email }, "process.env.JWT_SECRET!", {
-      //   expiresIn: "1h",
-      // });
       req.success = {
         status: 201,
         message: "Login Successfully!!",

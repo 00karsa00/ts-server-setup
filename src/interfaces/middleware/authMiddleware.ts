@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken"; // Ensure this is installed
+import { CustomRequest } from "../../type.config/custom";
 
 const SECRET_KEY = process.env.JWT_SECRET || "test";
 const whiteListUrl: string[] = [
@@ -9,7 +10,7 @@ const whiteListUrl: string[] = [
 ];
 
 export const authMiddleware = (
-  req: Request,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -21,7 +22,7 @@ export const authMiddleware = (
       }
       const token = authHeader.split(" ")[1];
       const decoded = jwt.verify(token, SECRET_KEY);
-      (req as any).user = decoded;
+      req.user = decoded;
     }
     next();
   } catch (error) {

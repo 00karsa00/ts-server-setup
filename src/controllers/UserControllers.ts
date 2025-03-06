@@ -1,22 +1,31 @@
 import { NextFunction, Request, Response } from "express";
 import { IUserInteractor } from "../interfaces/IUser/IUserInteractor";
-import { inject } from "inversify";
+import { inject, injectable } from "inversify";
 import { USER_INTERFACE_TYPE } from "../utils/appConst";
 import { CustomRequest } from "../type.config/custom";
 import { CustomError } from "../utils/error";
-import { PasswordUtil } from "./../utils/encryptdata/PasswordUtil";
+import { PasswordUtil } from "../utils/encryptdata/PasswordUtil";
+import { MailService } from "../utils/mailer/xNodeMailer";
 
+@injectable()
 export class User {
   private interactor: IUserInteractor;
   private passwordUtil: PasswordUtil;
+  private mailer: MailService;
+
   constructor(
     @inject(USER_INTERFACE_TYPE.UserInteractor) interactor: IUserInteractor
   ) {
     this.interactor = interactor;
     this.passwordUtil = new PasswordUtil();
+    this.mailer = new MailService();
   }
 
-  async onCreateUser(req: CustomRequest, res: Response, next: NextFunction) {
+  async onCreateUser(
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const { email, password, name } = req.body;
       const user = await this.interactor.createUser({

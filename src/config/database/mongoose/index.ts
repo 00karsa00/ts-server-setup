@@ -8,7 +8,6 @@ export class MongoDB {
   private mongoURI: string;
 
   private constructor() {
-    // this.mongoURI = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`;
     this.mongoURI = `mongodb://localhost:27017/${process.env.DB_NAME}`;
   }
 

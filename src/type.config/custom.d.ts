@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { Request } from "express";
 
 export interface CustomRequest extends Request {
   success?: {
@@ -11,4 +11,5 @@ export interface CustomRequest extends Request {
     message: string;
     // error: any;
   };
+  user?: any;
 }
