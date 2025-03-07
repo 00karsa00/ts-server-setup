@@ -3,6 +3,21 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
     { 
-        "email": "karthi1@gmail.com",
+        "email": "karthi@gmail.com",
         "password": "012345"
     }
+
+### logout the current user 
+GET http://localhost:3000/api/auth/logout
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2NhOTc3YjE3MTRhZTJjOTc2N2M5ZmYiLCJlbWFpbCI6ImthcnRoaXNrYW0xQGdtYWlsLmNvbSIsIm5hbWUiOiJrYXJodGljayIsInNlc3Npb25JZCI6IjY3Y2E5ZTQ0NzQ0ZTM2ZmE4NWJlNjNjYSIsImlhdCI6MTc0MTMzMjAzNiwiZXhwIjoxNzQxMzc1MjM2fQ.q5VV3TokH_jdT_EoIksyLPq9Q74KbwoTwkcHuP9oj2E
+
+### logout the other user 
+GET http://localhost:3000/api/auth/logoutAllOtherDevice
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2NhOTc3YjE3MTRhZTJjOTc2N2M5ZmYiLCJlbWFpbCI6ImthcnRoaXNrYW0xQGdtYWlsLmNvbSIsIm5hbWUiOiJrYXJodGljayIsInNlc3Npb25JZCI6IjY3Y2E5ZTY0NzQ0ZTM2ZmE4NWJlNjNkMiIsImlhdCI6MTc0MTMzMjA2OCwiZXhwIjoxNzQxMzc1MjY4fQ.QhgWzEJsch9AsAMm0a1XcBSak_xmV--1OcUfbqyuBHg
+
+### logout the all device 
+GET http://localhost:3000/api/auth/logoutAllDevice
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2NhOTc3YjE3MTRhZTJjOTc2N2M5ZmYiLCJlbWFpbCI6ImthcnRoaXNrYW0xQGdtYWlsLmNvbSIsIm5hbWUiOiJrYXJodGljayIsInNlc3Npb25JZCI6IjY3Y2E5ZTY0NzQ0ZTM2ZmE4NWJlNjNkMiIsImlhdCI6MTc0MTMzMjA2OCwiZXhwIjoxNzQxMzc1MjY4fQ.QhgWzEJsch9AsAMm0a1XcBSak_xmV--1OcUfbqyuBHg

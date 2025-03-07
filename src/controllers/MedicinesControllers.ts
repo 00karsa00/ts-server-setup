@@ -4,7 +4,7 @@ import { MEDICINE_INTERFACE_TYPE } from "../utils/appConst";
 import { CustomRequest } from "../type.config/custom";
 import { CustomError } from "../utils/error";
 import { IMedicineInteractor } from "../interfaces/IMedicine/IMedicineInteractor";
-import { MailService } from "../utils/mailer/xNodeMailer";
+import { MailService } from "../external-libraries/Mailer";
 
 export class MedicinesControllers {
   private interactor: IMedicineInteractor;
@@ -15,7 +15,7 @@ export class MedicinesControllers {
     interactor: IMedicineInteractor
   ) {
     this.interactor = interactor;
-    this.mailer = new MailService();
+    this.mailer = MailService.getInstance();
   }
 
   async onCreateMedicine(
@@ -47,10 +47,22 @@ export class MedicinesControllers {
         endDate,
         day,
       });
-      await this.mailer.sendMail(
-        "karthiskam@gmail.com",
-        "Send Mailer",
-        "Test Test "
+      const message = `
+        Name: ${name},
+        Description: ${description},
+        Remainder Type: ${type},
+        Recurring Type: ${recurringType || "-"},
+        Time: ${time},
+        End Date: ${endDate || "-"},
+        Day: ${day || "-"}
+        `;
+      await this.mailer.queueEmail(
+        req.user.email,
+        "New medition added",
+        'New medition was added',
+        `<p>Dear ${req.user.name},</p>
+        <p>New medition was added..</p>
+        <p>${message}</p>`
       );
       req.success = {
         status: 201,
@@ -75,7 +87,8 @@ export class MedicinesControllers {
     next: NextFunction
   ) {
     try {
-      const medicines = await this.interactor.getAllMedicine({});
+      const { userId } = req.user;
+      const medicines = await this.interactor.getAllMedicine({ userId });
       req.success = {
         status: 201,
         message: "Get All Medicines Successfully",
@@ -143,6 +156,40 @@ export class MedicinesControllers {
           endDate,
           day,
         }
+      );
+      req.success = {
+        status: 201,
+        message: "Updated the medicine Info..",
+        data: { medicine },
+      };
+    } catch (error) {
+      req.error = { status: 500, message: "Server Error!" };
+    } finally {
+      next();
+    }
+  }
+
+  async onMedicineStatus(
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { id } = req.params;
+      const { userId } = req.user;
+      const medicine = await this.interactor.updateMedicine(
+        { _id: id, userId },
+        {
+          asDone: true,
+        }
+      );
+      
+      await this.mailer.queueEmail(
+        req.user.email,
+        "Medicine status updated ",
+        "Status updated",
+        `<p>Dear ${req.user.name},</p>
+        <p>${medicine?.name} medicine reaimder as done</p>`
       );
       req.success = {
         status: 201,

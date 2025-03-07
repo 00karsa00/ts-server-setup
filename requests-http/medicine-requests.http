@@ -1,44 +1,46 @@
 ### Create Medicine
 POST http://localhost:3000/api/medicines
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2M4NDNhMzFhZWYyMDU2OWQzOTlkNDciLCJlbWFpbCI6ImthcnRoaTFAZ21haWwuY29tIiwiaWF0IjoxNzQxMjU1NDgyLCJleHAiOjE3NDEyNTkwODJ9.PN5cFidFxjBQ0kSuCnY2ZXdPPn807t21rykPUAyhBeA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2NhNWJiYjljOTcwODI2NzEyNGI5OWQiLCJlbWFpbCI6ImthcnRoaXNrYW1AZ21haWwuY29tIiwiaWF0IjoxNzQxMzIxMjE3LCJleHAiOjE3NDEzMjQ4MTd9.e12XqHViPpiQp_ei6wnAWV1aFg5OUgVoaxo3yzPHeDQ
 
     { 
-        "name": "karthi@gmail.com",
-        "description": "2345",
-        "type": "recurring",  
-        "recurringType": "weekly",
-        "date": "2019-01-03",
-        "time": "10:20 PM",
-        "endDate": "2020-01-04",
-        "day": "monday"
+        "name": "test",
+        "description": "testdisce",
+        "type": "oneTimeOnly",  
+        # "recurringType": "daily",
+        "date": "2024-03-07",
+        "time": "10:10 AM"
+        # "endDate": "2024-04-04"
+        # "day": "friday"
     }
 
 ### Get All Medicine
 GET http://localhost:3000/api/medicines
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2M4NDNhMzFhZWYyMDU2OWQzOTlkNDciLCJlbWFpbCI6ImthcnRoaTFAZ21haWwuY29tIiwiaWF0IjoxNzQxMTgzNjk3LCJleHAiOjE3NDExODcyOTd9.ht4IVCobusRUyJuv8DtCJWyLpdJCXR2X4dc7CYjpmpc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2NhNWJiYjljOTcwODI2NzEyNGI5OWQiLCJlbWFpbCI6ImthcnRoaXNrYW1AZ21haWwuY29tIiwibmFtZSI6Imthcmh0aWNrIiwic2Vzc2lvbklkIjoiNjdjYTk2Zjc1Nzg1M2Q5YzVjNjQ1ZGM1IiwiaWF0IjoxNzQxMzMwMTY3LCJleHAiOjE3NDEzNzMzNjd9.blHb1n90sT9TNLPS4i2pdAYbSldXswhmdz_cn_D1Ix0
 
 ### Get Medicine
 GET http://localhost:3000/api/medicines/67c84af8d0823dfa716d76b4
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2M4NDNhMzFhZWYyMDU2OWQzOTlkNDciLCJlbWFpbCI6ImthcnRoaTFAZ21haWwuY29tIiwiaWF0IjoxNzQxMTgzNjk3LCJleHAiOjE3NDExODcyOTd9.ht4IVCobusRUyJuv8DtCJWyLpdJCXR2X4dc7CYjpmpc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2NhNWJiYjljOTcwODI2NzEyNGI5OWQiLCJlbWFpbCI6ImthcnRoaXNrYW1AZ21haWwuY29tIiwibmFtZSI6Imthcmh0aWNrIiwic2Vzc2lvbklkIjoiNjdjYTk4YjY5YTlmMzQwMmZjNDVhN2RiIiwiaWF0IjoxNzQxMzMwNjE0LCJleHAiOjE3NDEzNzM4MTR9.nYHmUw-uHYWWSlQ9cdonX0_LU9SCc_qN59Ic0J9fAG0
 
 ### Update the Medicine
-PUT http://localhost:3000/api/medicines/67c84af8d0823dfa716d76b4
+PUT http://localhost:3000/api/medicines/67ca740eab19ebf077830af5
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2M4NDNhMzFhZWYyMDU2OWQzOTlkNDciLCJlbWFpbCI6ImthcnRoaTFAZ21haWwuY29tIiwiaWF0IjoxNzQxMTgzNjk3LCJleHAiOjE3NDExODcyOTd9.ht4IVCobusRUyJuv8DtCJWyLpdJCXR2X4dc7CYjpmpc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2NhNWJiYjljOTcwODI2NzEyNGI5OWQiLCJlbWFpbCI6ImthcnRoaXNrYW1AZ21haWwuY29tIiwiaWF0IjoxNzQxMzI0OTA1LCJleHAiOjE3NDEzMjg1MDV9.qPkwKbCgu5qlNjVxWYM4sl7KJqLbY2BlhmXoUJG-6j8
     
     { 
-        "name": "karthi@gmail.com",
-        "description": "2345",
-        "type": "recurring",
-        "recurringType": "weekly",
-        "date": "10-03-2019",
-        "time": "10:10 PM",
-        "endDate": "10-03-2020",
-        "day": "monday"
+        "name": "test",
+        "description": "test",
+        "type": "recurring",  
+        "recurringType": "daily",
+        "date": "2025-03-07",
+        "time": "12:00 PM",
+        "endDate": "2025-04-04"
+        # "day": "friday"
     }
 
-
-
+### Update the Medicine
+GET http://localhost:3000/api/medicines/67ca740eab19ebf077830af5/mark-as-done
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2NhNWJiYjljOTcwODI2NzEyNGI5OWQiLCJlbWFpbCI6ImthcnRoaXNrYW1AZ21haWwuY29tIiwiaWF0IjoxNzQxMzI0OTA1LCJleHAiOjE3NDEzMjg1MDV9.qPkwKbCgu5qlNjVxWYM4sl7KJqLbY2BlhmXoUJG-6j8

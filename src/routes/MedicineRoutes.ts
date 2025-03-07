@@ -6,7 +6,7 @@ import { IMedicineRepository } from "../interfaces/IMedicine/IMedicineRepository
 import { IMedicineInteractor } from "../interfaces/IMedicine/IMedicineInteractor";
 import { MedicineInteractor } from "../interactors/MedicineInteractor";
 import { MedicinesControllers } from "../controllers/MedicinesControllers";
-import { CronControllers } from "../controllers/CronControllers"; // Uncommented
+import { CronService } from "../services/CronService"; // Uncommented
 import { validate } from "../interfaces/middleware/requestValidation";
 import {
   medicineSchema,
@@ -17,7 +17,7 @@ export class MedicineRoutes {
   public router: Router;
   private container: Container;
   private controller: MedicinesControllers;
-  private cronController: CronControllers; // Un-commented
+  private cronService: CronService;
 
   constructor() {
     this.router = express.Router();
@@ -26,12 +26,12 @@ export class MedicineRoutes {
     this.controller = this.container.get<MedicinesControllers>(
       MEDICINE_INTERFACE_TYPE.MedicineController
     );
-    this.cronController = new CronControllers(
+    this.cronService = new CronService(
       this.container.get<IMedicineInteractor>(
         MEDICINE_INTERFACE_TYPE.MedicineInteractor
       )
-    ); // Initialize with DI
-    this.cronController.init(); // Start cron jobs
+    );
+    this.cronService.startJobs()
     this.initializeRoutes();
   }
 
@@ -53,19 +53,21 @@ export class MedicineRoutes {
       validate(medicineSchema) as express.RequestHandler,
       (req, res, next) => this.controller.onCreateMedicine(req, res, next)
     );
-
     this.router.get("/", (req, res, next) =>
       this.controller.onGetAllMedicines(req, res, next)
     );
-
     this.router.get("/:id", (req, res, next) =>
       this.controller.onGetMedicine(req, res, next)
     );
-
     this.router.put(
       "/:id",
       validate(medicineUpdateSchema) as express.RequestHandler,
       (req, res, next) => this.controller.onUpdateMedicine(req, res, next)
+    );
+    this.router.get(
+      "/:id/mark-as-done",
+      validate(medicineUpdateSchema) as express.RequestHandler,
+      (req, res, next) => this.controller.onMedicineStatus(req, res, next)
     );
   }
 }

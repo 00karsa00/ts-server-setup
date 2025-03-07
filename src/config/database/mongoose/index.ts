@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { logger } from "../../../utils/logger";
 
 dotenv.config();
 
@@ -26,7 +27,24 @@ export class MongoDB {
       console.error(err);
     }
   }
+
+  
+  public async ping(): Promise<void> {
+    if (mongoose.connection.readyState !== 1) {
+      throw new Error("MongoDB is not connected");
+    }
+    logger.debug("MongoDB is connected and reachable.");
+  }
+
+  public async disconnect(): Promise<void> {
+    try {
+      await mongoose.disconnect();
+      logger.info("MongoDB disconnected gracefully.");
+    } catch (err: any) {
+      logger.error(`Error while disconnecting MongoDB: ${err.message}`);
+      logger.error(err.stack);
+    }
+  }
 }
 
-// const mongoDB = MongoDB.getInstance();
-// mongoDB.connect();
+

@@ -28,6 +28,8 @@ export class AuthRoutes {
 
   private initializeRoutes() {
     this.router.post("/login",(req, res, next) =>  this.controller.onLoginUser(req, res, next));
-    // this.router.get("/logout,", this.controller.onLogoutUser)
+    this.router.get("/logout",(req, res, next) =>  this.controller.onLogoutUser(req, res, next));
+    this.router.get("/logoutAllDevice",(req, res, next) =>  this.controller.onLogoutAllDevice(req, res, next));
+    this.router.get("/logoutAllOtherDevice",(req, res, next) =>  this.controller.onLogoutAllOtherDevice(req, res, next));
   }
 }

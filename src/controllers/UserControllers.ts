@@ -5,20 +5,17 @@ import { USER_INTERFACE_TYPE } from "../utils/appConst";
 import { CustomRequest } from "../type.config/custom";
 import { CustomError } from "../utils/error";
 import { PasswordUtil } from "../utils/encryptdata/PasswordUtil";
-import { MailService } from "../utils/mailer/xNodeMailer";
 
 @injectable()
 export class User {
   private interactor: IUserInteractor;
   private passwordUtil: PasswordUtil;
-  private mailer: MailService;
 
   constructor(
     @inject(USER_INTERFACE_TYPE.UserInteractor) interactor: IUserInteractor
   ) {
     this.interactor = interactor;
     this.passwordUtil = new PasswordUtil();
-    this.mailer = new MailService();
   }
 
   async onCreateUser(
@@ -36,7 +33,6 @@ export class User {
       req.success = {
         status: 201,
         message: "User Register Successfully",
-        data: { user },
       };
     } catch (error) {
       if (error instanceof CustomError) {
@@ -66,8 +62,8 @@ export class User {
 
   async onGetUser(req: CustomRequest, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-      const user = await this.interactor.getUser({ _id: id });
+      const { userId } = req.user;
+      const user = await this.interactor.getUser({ _id: userId });
       if (!user) {
         req.success = {
           status: 401,
@@ -96,7 +92,6 @@ export class User {
       req.success = {
         status: 201,
         message: "Update User Info..",
-        data: { users },
       };
     } catch (error) {
       req.error = { status: 500, message: "Server Error!" };

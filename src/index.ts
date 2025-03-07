@@ -1,32 +1,35 @@
 import "reflect-metadata";
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { Routes } from "./routes";
 import { responseHandler } from "./interfaces/middleware/responseHandler";
 import { logRequestResponse } from "./interfaces/middleware/loggerMiddleware";
 import { logger } from "./utils/logger";
-// import { Database } from "./config/Database";
-import { AppDataSource } from "./config/database/typeOrm";
 import { authMiddleware } from "./interfaces/middleware/authMiddleware";
 import { MongoDB } from "./config/database/mongoose";
 
 dotenv.config();
 class Server {
+  private static instance: Server;
   private app: Application;
   private port: number;
-  // private database;
 
   constructor() {
     this.app = express();
     this.port = Number(process.env.PORT) || 5000;
-    // this.database = new Database();
     this.initializeMiddleware();
     this.initializeRoutes();
     this.initializeResponseHandling();
-    // this.typeOrmConnect();
     this.mongooseOrmConnect();
     this.start();
+  }
+
+  public static getInstance(): Server {
+    if (!Server.instance) {
+      Server.instance = new Server();
+    }
+    return Server.instance;
   }
 
   private initializeMiddleware(): void {
@@ -38,19 +41,19 @@ class Server {
 
   private initializeRoutes(): void {
     this.app.use("/api", new Routes().router);
+
+    this.app.get("/health", async (_req, res) => {
+      try {
+        await MongoDB.getInstance().ping(); 
+        res.status(200).json({ status: "healthy" });
+      } catch (error: any) {
+        res.status(500).json({ status: "unhealthy", error: error.message });
+      }
+    });
   }
 
   private initializeResponseHandling(): void {
     this.app.use(responseHandler as express.RequestHandler);
-  }
-
-  private async typeOrmConnect(): Promise<void> {
-    try {
-      await AppDataSource.initialize();
-      console.log("Data Source has been initialized!");
-    } catch (error) {
-      console.error("Error during Data Source initialization:", error);
-    }
   }
 
   private async mongooseOrmConnect(): Promise<void> {
@@ -64,9 +67,16 @@ class Server {
 
   private async start(): Promise<void> {
     try {
-      // await this.database.connect();
       this.app.listen(this.port, () => {
         logger.info(`Server running on port ${this.port}`);
+      });
+
+      process.on("SIGINT", async () => {
+        logger.info("Graceful shutdown initiated...");
+          await MongoDB.getInstance()
+          .disconnect()
+          .catch((err:any) => logger.error("MongoDB Shutdown Error:", err));
+        process.exit(0);
       });
     } catch (error) {
       logger.error("Failed to start the server:", `${error}`);
@@ -75,11 +85,12 @@ class Server {
 }
 
 process.on("uncaughtException", (error) => {
-  logger.error("Uncaught Exception:", error.message);
+  logger.error("Uncaught Exception:", JSON.stringify({ message: error.message, stack: error.stack }));
+  process.exit(1);
 });
 
 process.on("unhandledRejection", (reason: any) => {
   logger.error("Unhandled Rejection:", reason);
 });
 
-new Server();
+Server.getInstance();

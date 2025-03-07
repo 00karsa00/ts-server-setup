@@ -7,7 +7,10 @@ import { UserRepository } from "../repositories/UserRepository";
 import { IUserInteractor } from "../interfaces/IUser/IUserInteractor";
 import { UserInteractor } from "../interactors/UserInteractor";
 import { validate } from "../interfaces/middleware/requestValidation";
-import { userSchema } from "../interfaces/middleware/requestValidation/user";
+import {
+  userSchema,
+  userUpdateSchema,
+} from "../interfaces/middleware/requestValidation/user";
 
 export class UserRoutes {
   public router: Router;
@@ -17,11 +20,11 @@ export class UserRoutes {
   constructor() {
     this.router = express.Router();
     this.container = new Container();
-    this.initializeRoutes();
-    this.initializeBindings();
+    this.initializeBindings(); // This should be called first
     this.controller = this.container.get<User>(
       USER_INTERFACE_TYPE.UserController
     );
+    this.initializeRoutes();
   }
 
   private initializeBindings() {
@@ -35,17 +38,18 @@ export class UserRoutes {
   }
 
   private initializeRoutes() {
-    this.router.post("/", validate(userSchema) as express.RequestHandler, (req, res, next) =>
-      this.controller.onCreateUser(req, res, next)
+    this.router.post(
+      "/",
+      validate(userSchema) as express.RequestHandler,
+      (req, res, next) => this.controller.onCreateUser(req, res, next)
     );
     this.router.get("/", (req, res, next) =>
-      this.controller.onGetAllUsers(req, res, next)
-    );
-    this.router.get("/:id", (req, res, next) =>
       this.controller.onGetUser(req, res, next)
     );
-    this.router.put("/:id", (req, res, next) =>
-      this.controller.onGetUser(req, res, next)
+    this.router.put(
+      "/:id",
+      validate(userUpdateSchema) as express.RequestHandler,
+      (req, res, next) => this.controller.onUpdateUser(req, res, next)
     );
   }
 }
